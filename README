@@ -1,6 +1,6 @@
-# $Id: README,v 1.2 1997/04/30 21:06:27 jake Exp $
+# $Id: README,v 1.3 1997/05/01 22:06:46 jake Exp $
 
-    perlrpcgen 0.7a
+    perlrpcgen 0.71a
     Copyright 1997 Jake Donham <jake@organic.com>
 
     This program is free software; you can redistribute it and/or modify
@@ -44,3 +44,7 @@ There is an example client and server in dict/. See the README there.
 
 Please send bug reports or any other feedback to <jake@organic.com>. I
 would love to hear from you if you use perlrpcgen and find it useful.
+
+Changes since 0.7a:
+
+  Renamed RPC module to RPC::ONC.

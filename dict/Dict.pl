@@ -1,4 +1,4 @@
-# $Id: Dict.pl,v 1.5 1997/04/30 21:06:41 jake Exp $
+# $Id: Dict.pl,v 1.6 1997/05/01 22:06:53 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -9,7 +9,7 @@
 # Dict service.
 
 use strict;
-use RPC;
+use RPC::ONC;
 use Dict::Data;
 use Dict::Constants;
 use DB_File;
@@ -184,7 +184,7 @@ Deletes $deleteargs->key from $deleteargs->dict.
 
 =head1 SEE ALSO
 
-L<RPC(3)>, L<perlrpcgen(1)>, L<Tie::Dict(3)>
+L<RPC::ONC(3)>, L<perlrpcgen(1)>, L<Tie::Dict(3)>
 
 =head1 AUTHOR
 

@@ -1,4 +1,4 @@
-# $Id: RPC.pm,v 1.5 1997/04/30 21:42:25 jake Exp $
+# $Id: ONC.pm,v 1.1 1997/05/01 22:08:10 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -6,7 +6,7 @@
 #   Public License or the Artistic License, as specified in the README
 #   file.
 
-package RPC;
+package RPC::ONC;
 
 require Exporter;
 require DynaLoader;
@@ -34,7 +34,7 @@ sub AUTOLOAD {
 	}
 	else {
 	    ($pack,$file,$line) = caller;
-	    die "Your vendor has not defined RPC macro $constname, used at $file line $line.
+	    die "Your vendor has not defined RPC::ONC macro $constname, used at $file line $line.
 ";
 	}
     }
@@ -42,7 +42,7 @@ sub AUTOLOAD {
     goto &$AUTOLOAD;
 }
 
-bootstrap RPC;
+bootstrap RPC::ONC;
 
 # Preloaded methods go here.
 
@@ -53,15 +53,15 @@ __END__
 
 =head1 NAME
 
-RPC - Perl interface to ONC RPC
+RPC::ONC - Perl interface to ONC RPC
 
 =head1 SYNOPSIS
 
-    use RPC;
+    use RPC::ONC;
 
     # Create a client of the NFS service.
 
-    $clnt = &RPC::Client::clnt_create('foo.bar.com',
+    $clnt = &RPC::ONC::Client::clnt_create('foo.bar.com',
 				      NFS_PROGRAM, NFS_VERSION,
 				      'netpath');
 
@@ -70,9 +70,9 @@ RPC - Perl interface to ONC RPC
 
 =head1 DESCRIPTION
 
-The RPC module provides access to some of the ONC RPC routines for
-making and receiving remote procedure calls, as well as functions to
-access members of RPC-related structures. It's intended to be used
+The RPC::ONC module provides access to some of the ONC RPC routines
+for making and receiving remote procedure calls, as well as functions
+to access members of RPC-related structures. It's intended to be used
 with 'perlrpcgen', which generates Perl XS stubs for RPC clients and
 servers.
 
@@ -89,11 +89,11 @@ one you really need.
 
 =over 4
 
-=item RPC::errno
+=item RPC::ONC::errno
 
 Number of the error that just occurred.
 
-=item RPC::errstr
+=item RPC::ONC::errstr
 
 Message corresponding to error that just occurred.
 
@@ -101,16 +101,16 @@ Message corresponding to error that just occurred.
 
 =head1 CLASSES
 
-=head2 RPC::Client
+=head2 RPC::ONC::Client
 
-RPC::Client wraps CLIENT *.
+RPC::ONC::Client wraps CLIENT *.
 
 =over 4
 
 =item clnt_create(host, prognum, versnum, nettype)
 
-If the call fails, clnt_create will set RPC::errno and RPC::errstr and
-croak.
+If the call fails, clnt_create will set RPC::ONC::errno and
+RPC::ONC::errstr and croak.
 
 =item clnt_control(clnt, req, info)
 
@@ -121,14 +121,14 @@ operation.
 
 =item set_cl_auth(clnt, auth)
 
-Takes an RPC::Client object and an RPC::Auth object and assigns the
-cl_auth field of the first to the second.
+Takes an RPC::ONC::Client object and an RPC::ONC::Auth object and
+assigns the cl_auth field of the first to the second.
 
 =back
 
-=head2 RPC::Auth
+=head2 RPC::ONC::Auth
 
-RPC::Auth wraps AUTH *.
+RPC::ONC::Auth wraps AUTH *.
 
 =over 4
 
@@ -140,9 +140,9 @@ RPC::Auth wraps AUTH *.
 
 =back
 
-=head2 RPC::svc_req
+=head2 RPC::ONC::svc_req
 
-RPC::svc_req wraps struct svc_req *.
+RPC::ONC::svc_req wraps struct svc_req *.
 
 =over 4
 
@@ -160,21 +160,21 @@ Returns the rq_proc field.
 
 =item rq_cred(svc_req)
 
-Returns the rq_cred field as an RPC::opaque_auth object.
+Returns the rq_cred field as an RPC::ONC::opaque_auth object.
 
 =item authsys_parms(svc_req)
 
-Returns the rq_clntcred field as an RPC::authsys_parms object. Will
-croak if the credentials are not the right flavor.
+Returns the rq_clntcred field as an RPC::ONC::authsys_parms
+object. Will croak if the credentials are not the right flavor.
 
 =item authdes_cred(svc_req)
 
-Returns the rq_clntcred field as an RPC::authdes_cred object. Will
-croak if the credentials are not the right flavor.
+Returns the rq_clntcred field as an RPC::ONC::authdes_cred
+object. Will croak if the credentials are not the right flavor.
 
 =back
 
-=head2 RPC::opaque_auth
+=head2 RPC::ONC::opaque_auth
 
 =over 4
 
@@ -184,7 +184,7 @@ Returns the oa_flavor field.
 
 =back
 
-=head2 RPC::authsys_parms
+=head2 RPC::ONC::authsys_parms
 
 =over 4
 
@@ -210,9 +210,9 @@ Returns the aup_gids field as an array.
 
 =back
 
-=head2 RPC::Svcxprt
+=head2 RPC::ONC::Svcxprt
 
-RPC::Svcxprt wraps struct svcxprt *.
+RPC::ONC::Svcxprt wraps struct svcxprt *.
 
 =over 4
 

@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.1 1997/04/30 21:06:26 jake Exp $
+# $Id: Makefile.PL,v 1.2 1997/05/01 22:06:44 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -11,7 +11,7 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'	=> 'perlrpcgen',
-    'VERSION'	=> '0.7a',
+    'VERSION'	=> '0.71a',
     'DIR'	=> ['RPC'],
     'EXE_FILES' => ['perlrpcgen'],
     'MAN3PODS'	=> {}, # don't manify private modules

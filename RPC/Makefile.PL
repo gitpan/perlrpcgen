@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.5 1997/04/30 21:48:21 jake Exp $
+# $Id: Makefile.PL,v 1.6 1997/05/01 22:06:50 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(
-    'NAME'	=> 'RPC',
+    'NAME'	=> 'RPC::ONC',
     'VERSION'	=> '0.5a',
     'LIBS'	=> ['-lrpcsvc -lnsl'],   # e.g., '-lm' 
     'DEFINE'	=> '',     # e.g., '-DHAVE_SOMETHING' 

@@ -4,8 +4,8 @@ MANIFEST
 Makefile.PL
 README
 RPC/Makefile.PL
-RPC/RPC.pm
-RPC/RPC.xs
+RPC/ONC.pm
+RPC/ONC.xs
 RPC/typemap
 dict/Dict.pl
 dict/Dict.pm

@@ -12,7 +12,7 @@ $Config{startperl}
 !GROK!THIS!
 
 print OUT <<'!NO!SUBS!';
-# $Id: perlrpcgen.PL,v 1.3 1997/04/30 21:48:18 jake Exp $
+# $Id: perlrpcgen.PL,v 1.4 1997/05/01 22:06:47 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -211,7 +211,7 @@ sub do_typemap {
   foreach $name (keys %typemap) {
     print FH $name . "\t" . $typemap{$name} . "\n";
   }
-  print FH "RPC::Client\tT_PTROBJ\n";
+  print FH "RPC::ONC::Client\tT_PTROBJ\n";
 
   print FH "\nINPUT\n";
   foreach $name (keys %typein) {
@@ -245,7 +245,7 @@ sub do_typedefs {
     $cname =~ s/::/__/;
     print FH "typedef " . $typedef{$name} . "\t" . $cname . ";\n";
   }
-  print FH "typedef CLIENT *\tRPC__Client;\n";
+  print FH "typedef CLIENT *\tRPC__ONC__Client;\n";
 
   close FH;
 }
@@ -311,8 +311,8 @@ void set_perl_error(int errno, char *errstr)
   static SV *sv_errno = 0;
   static SV *sv_errstr = 0;
 
-  if (!sv_errno) sv_errno = perl_get_sv("RPC::errno", TRUE);
-  if (!sv_errstr) sv_errstr = perl_get_sv("RPC::errstr", TRUE);
+  if (!sv_errno) sv_errno = perl_get_sv("RPC::ONC::errno", TRUE);
+  if (!sv_errstr) sv_errstr = perl_get_sv("RPC::ONC::errstr", TRUE);
   sv_setiv(sv_errno, (IV) errno);
   sv_setpv(sv_errstr, errstr);
 }
@@ -383,8 +383,8 @@ SV *callperl(char *func, SV *arg, struct svc_req *rqstp, SVCXPRT *transp,
   SAVETMPS;
   PUSHMARK(sp);
 
-  sv_setref_pv(req, "RPC::svc_req", (void *)rqstp);
-  sv_setref_pv(tr, "RPC::Svcxprt", (void *)transp);
+  sv_setref_pv(req, "RPC::ONC::svc_req", (void *)rqstp);
+  sv_setref_pv(tr, "RPC::ONC::Svcxprt", (void *)transp);
 
   if (arg) {
     XPUSHs(arg);
@@ -527,9 +527,9 @@ sub do_client_perlmod {
 package ${module}::Client;
 use Exporter;
 use DynaLoader;
-use RPC;
+use RPC::ONC;
 use ${module}::Constants;
-\@ISA = qw(Exporter DynaLoader RPC::Client);
+\@ISA = qw(Exporter DynaLoader RPC::ONC::Client);
 bootstrap ${module}::Client;
 
 sub new {
@@ -537,7 +537,8 @@ sub new {
   \$prot = 'netpath' unless \$prot;
   \$prog = $prog unless \$prog;
   \$vers = $vers unless \$vers;
-  my \$client = &RPC::Client::clnt_create(\$server, \$prog, \$vers, \$prot);
+  my \$client =
+    &RPC::ONC::Client::clnt_create(\$server, \$prog, \$vers, \$prot);
   bless \$client, \$class;
 }
 
@@ -964,7 +965,7 @@ Sets the RPC libraries to link against. Defaults to '-lnsl -lrpcsvc'.
 =head2 Foo::Client
 
 RPC clients and the procedure calls they support are encapsulated in
-Foo::Client objects (which inherit from RPC::Client).
+Foo::Client objects (which inherit from RPC::ONC::Client).
 
 A new Foo::Client can be created like this:
 
@@ -975,9 +976,9 @@ the value of the first 'program' declaration in the interface, and the
 value of the first 'version' declaration in the interface,
 respectively.
 
-If the client creation fails, the constructor will set $RPC::errno and
-$RPC::errstr to the error number and error string, respectively, and
-croak.
+If the client creation fails, the constructor will set
+$RPC::ONC::errno and $RPC::ONC::errstr to the error number and error
+string, respectively, and croak.
 
 For each procedure there is a method with the same name (with an
 underscore and the version number appended as in C). Methods are
@@ -988,10 +989,10 @@ called like this:
 $arg must be an object of the correct type as given in the interface
 definition (see Foo::Data for details), or nothing if the interface
 specifies a 'void' argument. If the remote procedure call fails, the
-method will set $RPC::errno and $RPC::errstr and croak.
+method will set $RPC::ONC::errno and $RPC::ONC::errstr and croak.
 
-You'll need to use RPC, Foo::Data, Foo::Constants, and Foo::Client in
-your client code.
+You'll need to use RPC::ONC, Foo::Data, Foo::Constants, and
+Foo::Client in your client code.
 
 =head2 Foo::Data
 
@@ -1083,13 +1084,14 @@ These functions are called as follows:
     $val = someproc_1($svc_req, $transp);
 
 $arg is the procedure argument (of the appropriate type) or nothing if
-the procedure is declared to take 'void'. $svc_req is an RPC::svc_req
-object (see RPC) through which the client's credentials can be
-accessed. $transp is an RPC::Svcxprt object (see RPC) through which
-the client's IP address can be accessed.
+the procedure is declared to take 'void'. $svc_req is an
+RPC::ONC::svc_req object (see RPC::ONC) through which the client's
+credentials can be accessed. $transp is an RPC::ONC::Svcxprt object
+(see RPC::ONC) through which the client's IP address can be accessed.
 
-You'll need to use RPC, Foo::Data, and Foo::Constants, but don't try
-to use Foo::Client in a server, because you'll get symbol conflicts.
+You'll need to use RPC::ONC, Foo::Data, and Foo::Constants, but don't
+try to use Foo::Client in a server, because you'll get symbol
+conflicts.
 
 The command line arguments are passed unchanged to Perl. Usually you
 start a server with something like:
@@ -1110,7 +1112,7 @@ at work.
 
 =head1 SEE ALSO
 
-L<rpcgen(1)>, L<RPC(3)>
+L<rpcgen(1)>, L<RPC::ONC(3)>
 
 =head1 BUGS
 

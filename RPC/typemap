@@ -1,4 +1,4 @@
-# $Id: typemap,v 1.4 1997/04/30 02:01:18 jake Exp $
+# $Id: typemap,v 1.5 1997/05/01 22:06:51 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -7,13 +7,13 @@
 #   file.
 
 TYPEMAP
-RPC::Client	T_PTROBJ
-RPC::Auth	T_PTROBJ
-RPC::svc_req	T_PTROBJ
-RPC::Svcxprt	T_PTROBJ
-RPC::opaque_auth	T_PTROBJ
-RPC::authsys_parms	T_PTROBJ
-RPC::authdes_cred	T_PTROBJ
+RPC::ONC::Client	T_PTROBJ
+RPC::ONC::Auth	T_PTROBJ
+RPC::ONC::svc_req	T_PTROBJ
+RPC::ONC::Svcxprt	T_PTROBJ
+RPC::ONC::opaque_auth	T_PTROBJ
+RPC::ONC::authsys_parms	T_PTROBJ
+RPC::ONC::authdes_cred	T_PTROBJ
 u_long	T_IV
 uid_t	T_IV
 gid_t	T_IV

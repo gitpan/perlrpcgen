@@ -1,4 +1,4 @@
-/* $Id: RPC.xs,v 1.5 1997/04/30 02:01:17 jake Exp $ */
+/* $Id: ONC.xs,v 1.1 1997/05/01 22:08:11 jake Exp $ */
 
 /*  Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -14,13 +14,13 @@
 #include <rpc/rpc.h>
 #include <rpc/svc_soc.h>
 
-typedef SVCXPRT *RPC__Svcxprt;
-typedef CLIENT *RPC__Client;
-typedef AUTH *RPC__Auth;
-typedef struct svc_req *RPC__svc_req;
-typedef struct opaque_auth *RPC__opaque_auth;
-typedef struct authsys_parms *RPC__authsys_parms;
-typedef struct authdes_cred *RPC__authdes_cred;
+typedef SVCXPRT *RPC__ONC__Svcxprt;
+typedef CLIENT *RPC__ONC__Client;
+typedef AUTH *RPC__ONC__Auth;
+typedef struct svc_req *RPC__ONC__svc_req;
+typedef struct opaque_auth *RPC__ONC__opaque_auth;
+typedef struct authsys_parms *RPC__ONC__authsys_parms;
+typedef struct authdes_cred *RPC__ONC__authdes_cred;
 
 static int
 not_here(s)
@@ -151,13 +151,13 @@ void set_perl_error(int errno, char *errstr)
   static SV *sv_errno = 0;
   static SV *sv_errstr = 0;
 
-  if (!sv_errno) sv_errno = perl_get_sv("RPC::errno", TRUE);
-  if (!sv_errstr) sv_errstr = perl_get_sv("RPC::errstr", TRUE);
+  if (!sv_errno) sv_errno = perl_get_sv("RPC::ONC::errno", TRUE);
+  if (!sv_errstr) sv_errstr = perl_get_sv("RPC::ONC::errstr", TRUE);
   sv_setiv(sv_errno, (IV) errno);
   sv_setpv(sv_errstr, errstr);
 }
 
-MODULE = RPC		PACKAGE = RPC
+MODULE = RPC::ONC		PACKAGE = RPC::ONC
 
 PROTOTYPES: DISABLE
 
@@ -166,9 +166,9 @@ constant(name,arg)
 	char *		name
 	int		arg
 
-MODULE = RPC	PACKAGE = RPC::Client
+MODULE = RPC::ONC	PACKAGE = RPC::ONC::Client
 
-RPC::Client
+RPC::ONC::Client
 clnt_create(host,prognum,versnum,nettype)
     char *host
     long prognum
@@ -178,7 +178,7 @@ clnt_create(host,prognum,versnum,nettype)
     CODE:
 	char *msg;
 	if ((RETVAL = clnt_create(host, prognum, versnum, nettype)) == 0) {
-	  char *msg = clnt_spcreateerror("RPC::clnt_create");
+	  char *msg = clnt_spcreateerror("RPC::ONC::clnt_create");
 	  set_perl_error(rpc_createerr.cf_stat, msg);
      	  croak(msg);
 	}
@@ -188,7 +188,7 @@ clnt_create(host,prognum,versnum,nettype)
 
 int
 clnt_control(clnt,req,info)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
     int req
     char *info
 
@@ -200,29 +200,29 @@ clnt_control(clnt,req,info)
 
 void
 clnt_destroy(clnt)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
 
     CODE:
 	clnt_destroy(clnt);
 
 void
 DESTROY(clnt)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
 
     CODE:
 	clnt_destroy(clnt);
 
 void
 set_cl_auth(clnt,auth)
-    RPC::Client clnt
-    RPC::Auth auth
+    RPC::ONC::Client clnt
+    RPC::ONC::Auth auth
 
     CODE:
 	clnt->cl_auth = auth;
 
-MODULE = RPC	PACKAGE = RPC::Auth
+MODULE = RPC::ONC	PACKAGE = RPC::ONC::Auth
 
-RPC::Auth
+RPC::ONC::Auth
 authnone_create()
 
     CODE:
@@ -232,7 +232,7 @@ authnone_create()
     OUTPUT:
 	RETVAL
 
-RPC::Auth
+RPC::ONC::Auth
 authsys_create_default()
 
     CODE:
@@ -244,16 +244,16 @@ authsys_create_default()
 
 void
 auth_destroy(auth)
-    RPC::Auth auth
+    RPC::ONC::Auth auth
 
     CODE:
 	auth_destroy(auth);
 
-MODULE = RPC		PACKAGE = RPC::svc_req
+MODULE = RPC::ONC		PACKAGE = RPC::ONC::svc_req
 
 u_long
 rq_prog(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	RETVAL = svc_req->rq_prog;
@@ -263,7 +263,7 @@ rq_prog(svc_req)
 
 u_long
 rq_vers(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	RETVAL = svc_req->rq_vers;
@@ -273,7 +273,7 @@ rq_vers(svc_req)
 
 u_long
 rq_proc(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	RETVAL = svc_req->rq_proc;
@@ -281,9 +281,9 @@ rq_proc(svc_req)
     OUTPUT:
 	RETVAL
 
-RPC::opaque_auth
+RPC::ONC::opaque_auth
 rq_cred(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	RETVAL = &(svc_req->rq_cred);
@@ -291,9 +291,9 @@ rq_cred(svc_req)
     OUTPUT:
 	RETVAL
 
-RPC::authsys_parms
+RPC::ONC::authsys_parms
 authsys_parms(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	if (svc_req->rq_cred.oa_flavor == AUTH_SYS)
@@ -304,9 +304,9 @@ authsys_parms(svc_req)
     OUTPUT:
 	RETVAL
 
-RPC::authdes_cred
+RPC::ONC::authdes_cred
 authdes_cred(svc_req)
-    RPC::svc_req svc_req
+    RPC::ONC::svc_req svc_req
 
     CODE:
 	if (svc_req->rq_cred.oa_flavor == AUTH_DES)
@@ -317,11 +317,11 @@ authdes_cred(svc_req)
     OUTPUT:
 	RETVAL
 
-MODULE = RPC		PACKAGE = RPC::opaque_auth
+MODULE = RPC::ONC		PACKAGE = RPC::ONC::opaque_auth
 
 int
 oa_flavor(opaque_auth)
-    RPC::opaque_auth opaque_auth
+    RPC::ONC::opaque_auth opaque_auth
 
     CODE:
 	RETVAL = opaque_auth->oa_flavor;
@@ -329,11 +329,11 @@ oa_flavor(opaque_auth)
     OUTPUT:
 	RETVAL
 
-MODULE = RPC		PACKAGE = RPC::authsys_parms
+MODULE = RPC::ONC		PACKAGE = RPC::ONC::authsys_parms
 
 u_long
 aup_time(authsys_parms)
-    RPC::authsys_parms authsys_parms
+    RPC::ONC::authsys_parms authsys_parms
 
     CODE:
 	RETVAL = authsys_parms->aup_time;
@@ -343,7 +343,7 @@ aup_time(authsys_parms)
 
 char *
 aup_machname(authsys_parms)
-    RPC::authsys_parms authsys_parms
+    RPC::ONC::authsys_parms authsys_parms
 
     CODE:
 	RETVAL = authsys_parms->aup_machname;
@@ -353,7 +353,7 @@ aup_machname(authsys_parms)
 
 uid_t
 aup_uid(authsys_parms)
-    RPC::authsys_parms authsys_parms
+    RPC::ONC::authsys_parms authsys_parms
 
     CODE:
 	RETVAL = authsys_parms->aup_uid;
@@ -363,7 +363,7 @@ aup_uid(authsys_parms)
 
 gid_t
 aup_gid(authsys_parms)
-    RPC::authsys_parms authsys_parms
+    RPC::ONC::authsys_parms authsys_parms
 
     CODE:
 	RETVAL = authsys_parms->aup_gid;
@@ -373,7 +373,7 @@ aup_gid(authsys_parms)
 
 AV *
 aup_gids(authsys_parms)
-    RPC::authsys_parms authsys_parms
+    RPC::ONC::authsys_parms authsys_parms
 
     CODE:
 	{
@@ -389,11 +389,11 @@ aup_gids(authsys_parms)
     OUTPUT:
 	RETVAL
 
-MODULE = RPC		PACKAGE = RPC::Svcxprt
+MODULE = RPC::ONC		PACKAGE = RPC::ONC::Svcxprt
 
 struct sockaddr_in *
 svc_getcaller(transp)
-    RPC::Svcxprt transp
+    RPC::ONC::Svcxprt transp
 
     CODE:
 	RETVAL = svc_getcaller(transp);

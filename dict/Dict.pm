@@ -1,4 +1,4 @@
-# $Id: Dict.pm,v 1.5 1997/04/30 21:06:43 jake Exp $
+# $Id: Dict.pm,v 1.6 1997/05/01 22:06:54 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -13,7 +13,6 @@ package Tie::Dict;
 
 use strict;
 
-use RPC;
 use Dict::Data;
 use Dict::Constants;
 use Dict::Client;

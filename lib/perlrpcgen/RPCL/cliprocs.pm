@@ -1,4 +1,4 @@
-# $Id: cliprocs.pm,v 1.7 1997/04/30 04:30:04 jake Exp $
+# $Id: cliprocs.pm,v 1.8 1997/05/01 22:06:57 jake Exp $
 
 #   Copyright 1997 Jake Donham <jake@organic.com>
 
@@ -38,7 +38,7 @@ sub RPCL::Procedure::cliprocs {
       print $fh <<EOF;
 $ret
 $proc(clnt)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
 
     CODE:
 	if ($proc(0, clnt) == 0) {
@@ -53,7 +53,7 @@ EOF
       print $fh <<EOF;
 $ret
 $proc(clnt,arg)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
     $arg arg
 
     CODE:
@@ -71,7 +71,7 @@ EOF
       print $fh <<EOF;
 $ret
 $proc(clnt)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
 
     CODE:
 	if ((RETVAL = ${retderef}$proc(0, clnt)) == 0) {
@@ -89,7 +89,7 @@ EOF
       print $fh <<EOF;
 $ret
 $proc(clnt,arg)
-    RPC::Client clnt
+    RPC::ONC::Client clnt
     $arg arg
 
     CODE:
