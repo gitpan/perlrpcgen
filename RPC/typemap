@@ -1,0 +1,28 @@
+# $Id: typemap,v 1.4 1997/04/30 02:01:18 jake Exp $
+
+#   Copyright 1997 Jake Donham <jake@organic.com>
+
+#   You may distribute under the terms of either the GNU General
+#   Public License or the Artistic License, as specified in the README
+#   file.
+
+TYPEMAP
+RPC::Client	T_PTROBJ
+RPC::Auth	T_PTROBJ
+RPC::svc_req	T_PTROBJ
+RPC::Svcxprt	T_PTROBJ
+RPC::opaque_auth	T_PTROBJ
+RPC::authsys_parms	T_PTROBJ
+RPC::authdes_cred	T_PTROBJ
+u_long	T_IV
+uid_t	T_IV
+gid_t	T_IV
+struct sockaddr_in *	T_sockaddr_in
+
+INPUT
+T_sockaddr_in
+	$var = ($type)SvPV($arg,na)
+
+OUTPUT
+T_sockaddr_in
+	sv_setpvn($arg, (char *)$var, sizeof(struct sockaddr_in));
